@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators'; // Import switchMap and tap
 
 export interface Expense {
   id?: number;
@@ -24,12 +25,16 @@ export class ExpenseService {
   }
 
   // Add a new expense
-  addExpense(expense: Expense): Observable<Expense> {
+  addExpense(expense: Expense): Observable<Expense[]> {
     // Ensure the date is in ISO format with seconds and timezone offset
     if (expense.date) {
       expense.date = new Date(expense.date).toISOString(); // Format to ISO 8601 string
     }
-    return this.http.post<Expense>(this.apiUrl, expense);
+    // return this.http.post<Expense>(this.apiUrl, expense);
+    location.reload();
+    return this.http
+      .post<Expense>(this.apiUrl, expense)
+      .pipe(switchMap(() => this.getExpenses()));
   }
 
   // Update an expense

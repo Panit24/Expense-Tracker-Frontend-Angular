@@ -18,6 +18,10 @@ export class ExpenseListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadExpenses();
+    // Fetch the expenses when the component is initialized
+    // this.expenseService.getExpenses().subscribe((expenses: Expense[]) => {
+    //   this.expenses = expenses; // Assign the fetched expenses to the component property
+    // });
   }
 
   loadExpenses(): void {
@@ -25,6 +29,18 @@ export class ExpenseListComponent implements OnInit {
       this.expenses = data;
       console.log('Expenses fetched:', data); // Log the data for debugging
     });
+  }
+
+  addExpense(newExpense: Expense): void {
+    this.expenseService.addExpense(newExpense).subscribe(
+      () => {
+        // Reload the page after the expense is added
+        location.reload();
+      },
+      (error) => {
+        console.error('Error adding expense:', error); // Handle error if any
+      }
+    );
   }
 
   deleteExpense(id: number): void {
