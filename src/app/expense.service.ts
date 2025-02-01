@@ -31,7 +31,7 @@ export class ExpenseService {
       expense.date = new Date(expense.date).toISOString(); // Format to ISO 8601 string
     }
     // return this.http.post<Expense>(this.apiUrl, expense);
-    location.reload();
+    // location.reload();
     return this.http
       .post<Expense>(this.apiUrl, expense)
       .pipe(switchMap(() => this.getExpenses()));
@@ -39,6 +39,9 @@ export class ExpenseService {
 
   // Update an expense
   updateExpense(id: number, expense: Expense): Observable<Expense> {
+    if (expense.date) {
+      expense.date = new Date(expense.date).toISOString(); // Format to ISO 8601 string
+    }
     return this.http.put<Expense>(`${this.apiUrl}/${id}`, expense);
   }
 

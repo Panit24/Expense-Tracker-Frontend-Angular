@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { ExpenseService, Expense } from '../expense.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common'; // Import CommonModule
@@ -13,6 +13,8 @@ import { CommonModule } from '@angular/common'; // Import CommonModule
 
 //Update the expense-form.component.ts file to add new expenses:
 export class ExpenseFormComponent implements OnInit {
+  @Output() expenseAdded = new EventEmitter<void>(); // EventEmitter to notify parent
+
   expense: Expense = {
     title: '',
     description: '',
@@ -26,7 +28,7 @@ export class ExpenseFormComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit(): void {
-    this.expenseService.addExpense(this.expense).subscribe(() => {
+    this.expenseService.addExpense(this.expense).subscribe((newExpense) => {
       alert('New expense added successfully!');
       this.expense = {
         title: '',
@@ -36,5 +38,7 @@ export class ExpenseFormComponent implements OnInit {
         date: '',
       }; // Reset form
     });
+    // this.expenseAdded.emit(); // Notify parent component
+    location.reload();
   }
 }

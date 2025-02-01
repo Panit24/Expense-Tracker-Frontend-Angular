@@ -1,25 +1,93 @@
-<h2>Expense List</h2>
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Description</th>
-      <th>Amount</th>
-      <th>Category</th>
-      <th>Date</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let expense of expenses">
-      <td>{{ expense.title }}</td>
-      <td>{{ expense.description }}</td>
-      <td>{{ expense.amount }}</td>
-      <td>{{ expense.category }}</td>
-      <td>{{ expense.date }}</td>
-      <td>
-        <button (click)="deleteExpense(expense.id!)">Delete</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<div class="expense-list">
+  <h2>Expense List</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>Category</th>
+        <th>Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let expense of expenses">
+        <td>{{ expense.title }}</td>
+        <td>{{ expense.description }}</td>
+        <td class="text-right">{{ expense.amount | number : "1.2-2" }}</td>
+        <td>{{ expense.category }}</td>
+        <td>{{ expense.date | date : "dd-MM-yy HH:mm" }}</td>
+        <td>
+          <div class="container">
+            <!-- <button class="edit-button" (click)="updateExpense(expense.id!)">
+              edit
+            </button> -->
+            <button class="edit-button" (click)="openEditModal(expense)">
+              <i class="fas fa-edit" style="color: blue"></i>
+              <!-- Blue Edit Icon -->
+              <!-- Font Awesome edit icon -->
+            </button>
+            <button class="delete-button" (click)="deleteExpense(expense.id!)">
+              <i class="fas fa-trash" style="color: red"></i>
+              <!-- Red Trash Icon -->
+              <!-- Font Awesome trash icon -->
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- Edit Modal -->
+<div class="modal-overlay" *ngIf="isModalOpen">
+  <div class="modal">
+    <h2>Edit Expense</h2>
+    <form (ngSubmit)="updateExpense(selectedExpense.id ?? 0, selectedExpense)">
+      <label for="title">Title</label>
+      <input id="title" [(ngModel)]="selectedExpense.title" name="title" />
+
+      <label for="description">Description</label>
+      <textarea
+        id="description"
+        [(ngModel)]="selectedExpense.description"
+        name="description"
+      ></textarea>
+
+      <label for="amount">Amount</label>
+      <input
+        id="amount"
+        type="number"
+        [(ngModel)]="selectedExpense.amount"
+        name="amount"
+      />
+
+      <label for="category">Category</label>
+      <select
+        id="category"
+        [(ngModel)]="selectedExpense.category"
+        name="category"
+      >
+        <option value="Food">Food</option>
+        <option value="Transport">Hobby</option>
+        <option value="Entertainment">Entertainment</option>
+        <option value="Utilities">Utilities</option>
+      </select>
+
+      <label for="date">Date</label>
+      <input
+        id="date"
+        type="datetime-local"
+        [(ngModel)]="selectedExpense.date"
+        name="date"
+      />
+
+      <div class="modal-actions">
+        <button type="button" class="cancel-button" (click)="closeEditModal()">
+          Cancel
+        </button>
+        <button type="submit" class="save-button">Save</button>
+      </div>
+    </form>
+  </div>
+</div>

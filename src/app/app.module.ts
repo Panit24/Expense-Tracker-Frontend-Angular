@@ -11,7 +11,7 @@ import { ExpenseListComponent } from './expense-list/expense-list.component';
 import { ExpenseFormComponent } from './expense-form/expense-form.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, ExpenseListComponent],
   imports: [
     BrowserModule,
     FormsModule,
